@@ -1,0 +1,274 @@
+Sql code :
+
+
+DROP TABLE IF EXISTS `Add`;
+
+DROP TABLE IF EXISTS contract;
+
+DROP TABLE IF EXISTS `Date`;
+
+DROP TABLE IF EXISTS email;
+
+DROP TABLE IF EXISTS journal;
+
+DROP TABLE IF EXISTS owner;
+
+DROP TABLE IF EXISTS property;
+
+DROP TABLE IF EXISTS shop;
+
+DROP TABLE IF EXISTS telephone;
+
+DROP TABLE IF EXISTS tenant;
+
+DROP TABLE IF EXISTS visit;
+
+DROP TABLE IF EXISTS worker;
+
+
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE `Add` (
+    add_id                   CHAR(30) NOT NULL,
+    property_property_number INTEGER NOT NULL
+);
+
+
+CREATE UNIQUE INDEX add__idx ON
+    `Add` (
+        property_property_number
+    ASC );
+
+ALTER TABLE `Add` ADD CONSTRAINT add_pk PRIMARY KEY ( add_id );
+
+
+CREATE TABLE contract (
+    hire_number              INTEGER NOT NULL,
+    sign_date                CHAR(10) NOT NULL,
+    starting_date            CHAR(10) NOT NULL,
+    end_date                 CHAR(10) NOT NULL,
+    property_property_number INTEGER NOT NULL,
+    tenant_tenant_num        INTEGER NOT NULL
+);
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE UNIQUE INDEX contract__idx ON
+    contract (
+        property_property_number
+    ASC );
+
+ALTER TABLE contract ADD CONSTRAINT contract_pk PRIMARY KEY ( hire_number );
+
+-
+CREATE TABLE `Date` (
+    day        CHAR(15) NOT NULL,
+    month      CHAR(20) NOT NULL,
+    year       INTEGER NOT NULL,
+    add_add_id CHAR(30) NOT NULL
+);
+
+
+CREATE UNIQUE INDEX date__idx ON
+    `Date` (
+        add_add_id
+    ASC );
+
+ALTER TABLE `Date` ADD CONSTRAINT date_pk PRIMARY KEY ( month );
+
+
+CREATE TABLE email (
+    email                  CHAR(30) NOT NULL,
+    owner_recognize_number INTEGER NOT NULL,
+    worker_worker_number   INTEGER NOT NULL,
+    tenant_tenant_num      INTEGER NOT NULL,
+    shop_shop_number       INTEGER NOT NULL
+);
+
+ALTER TABLE email ADD CONSTRAINT email_pk PRIMARY KEY ( email );
+
+
+CREATE TABLE journal (
+    name       CHAR(20) NOT NULL,
+    add_add_id CHAR(30) NOT NULL
+);
+
+ALTER TABLE journal ADD CONSTRAINT journal_pk PRIMARY KEY ( name );
+
+
+CREATE TABLE owner (
+    recognize_number INTEGER NOT NULL,
+    name             CHAR(20),
+    surname          CHAR(20),
+    father_name      CHAR(20),
+    business_name    CHAR(20),
+    business_type    CHAR(30) NOT NULL,
+    street           CHAR(30) NOT NULL,
+    `number`         INTEGER NOT NULL,
+    t_k              INTEGER NOT NULL,
+    city             CHAR(30) NOT NULL
+);
+
+ALTER TABLE owner ADD CONSTRAINT owner_pk PRIMARY KEY ( recognize_number );
+
+
+CREATE TABLE property (
+    property_number        INTEGER NOT NULL,
+    sq_meters              INTEGER NOT NULL,
+    type                   CHAR(20) NOT NULL,
+    street                 CHAR(30) NOT NULL,
+    `number`               INTEGER NOT NULL,
+    t_k                    INTEGER NOT NULL,
+    owner_recognize_number INTEGER NOT NULL,
+    tenant_tenant_num      INTEGER NOT NULL,
+    worker_worker_number   INTEGER NOT NULL,
+    city                   CHAR(30)
+);
+
+CREATE UNIQUE INDEX property__idx ON
+    property (
+        worker_worker_number
+    ASC );
+
+ALTER TABLE property ADD CONSTRAINT property_pk PRIMARY KEY ( property_number );
+
+
+CREATE TABLE shop (
+    shop_number INTEGER NOT NULL,
+    street      CHAR(30) NOT NULL,
+    `number`    INTEGER NOT NULL,
+    t_k         INTEGER NOT NULL,
+    city        CHAR(30)
+);
+
+ALTER TABLE shop ADD CONSTRAINT shop_pk PRIMARY KEY ( shop_number );
+
+
+CREATE TABLE telephone (
+    telephone              INTEGER NOT NULL,
+    owner_recognize_number INTEGER NOT NULL,
+    worker_worker_number   INTEGER NOT NULL,
+    tenant_tenant_num      INTEGER NOT NULL,
+    shop_shop_number       INTEGER NOT NULL
+);
+
+ALTER TABLE telephone ADD CONSTRAINT telephone_pk PRIMARY KEY ( telephone );
+
+
+CREATE TABLE tenant (
+    tenant_num    INTEGER NOT NULL,
+    name          CHAR(20),
+    surname       CHAR(20),
+    father_name   CHAR(20),
+    business_name CHAR(20),
+    street        CHAR(30) NOT NULL,
+    `number`      INTEGER NOT NULL,
+    t_k           INTEGER NOT NULL,
+    city          CHAR(30)
+);
+
+ALTER TABLE tenant ADD CONSTRAINT tenant_pk PRIMARY KEY ( tenant_num );
+
+
+CREATE TABLE visit (
+    visit_num            INTEGER NOT NULL,
+    contract_hire_number INTEGER NOT NULL,
+    tenant_tenant_num    INTEGER NOT NULL
+);
+
+ALTER TABLE visit ADD CONSTRAINT visit_pk PRIMARY KEY ( visit_num );
+
+
+CREATE TABLE worker (
+    worker_number    INTEGER NOT NULL,
+    name             CHAR(20) NOT NULL,
+    surname          CHAR(20) NOT NULL,
+    father_name      CHAR(20) NOT NULL,
+    gender           CHAR(6) NOT NULL,
+    speciality       CHAR(20) NOT NULL,
+    salary           INTEGER NOT NULL,
+    street           CHAR(30) NOT NULL,
+    `number`         INTEGER NOT NULL,
+    t_k              INTEGER NOT NULL,
+    city             CHAR(30) NOT NULL,
+    shop_shop_number INTEGER NOT NULL
+);
+
+ALTER TABLE worker ADD CONSTRAINT worker_pk PRIMARY KEY ( worker_number );
+
+ALTER TABLE `Add`
+    ADD CONSTRAINT add_property_fk FOREIGN KEY ( property_property_number )
+        REFERENCES property ( property_number );
+
+ALTER TABLE contract
+    ADD CONSTRAINT contract_property_fk FOREIGN KEY ( property_property_number )
+        REFERENCES property ( property_number );
+
+ALTER TABLE contract
+    ADD CONSTRAINT contract_tenant_fk FOREIGN KEY ( tenant_tenant_num )
+        REFERENCES tenant ( tenant_num );
+
+ALTER TABLE `Date`
+    ADD CONSTRAINT date_add_fk FOREIGN KEY ( add_add_id )
+        REFERENCES `Add` ( add_id );
+
+ALTER TABLE email
+    ADD CONSTRAINT email_owner_fk FOREIGN KEY ( owner_recognize_number )
+        REFERENCES owner ( recognize_number );
+
+ALTER TABLE email
+    ADD CONSTRAINT email_shop_fk FOREIGN KEY ( shop_shop_number )
+        REFERENCES shop ( shop_number );
+
+ALTER TABLE email
+    ADD CONSTRAINT email_tenant_fk FOREIGN KEY ( tenant_tenant_num )
+        REFERENCES tenant ( tenant_num );
+
+ALTER TABLE email
+    ADD CONSTRAINT email_worker_fk FOREIGN KEY ( worker_worker_number )
+        REFERENCES worker ( worker_number );
+
+ALTER TABLE journal
+    ADD CONSTRAINT journal_add_fk FOREIGN KEY ( add_add_id )
+        REFERENCES `Add` ( add_id );
+
+ALTER TABLE property
+    ADD CONSTRAINT property_owner_fk FOREIGN KEY ( owner_recognize_number )
+        REFERENCES owner ( recognize_number );
+
+-- SQLINES DEMO *** ey Property_Shop_FK has no columns
+
+ALTER TABLE property
+    ADD CONSTRAINT property_tenant_fk FOREIGN KEY ( tenant_tenant_num )
+        REFERENCES tenant ( tenant_num );
+
+ALTER TABLE property
+    ADD CONSTRAINT property_worker_fk FOREIGN KEY ( worker_worker_number )
+        REFERENCES worker ( worker_number );
+
+ALTER TABLE telephone
+    ADD CONSTRAINT telephone_owner_fk FOREIGN KEY ( owner_recognize_number )
+        REFERENCES owner ( recognize_number );
+
+ALTER TABLE telephone
+    ADD CONSTRAINT telephone_shop_fk FOREIGN KEY ( shop_shop_number )
+        REFERENCES shop ( shop_number );
+
+ALTER TABLE telephone
+    ADD CONSTRAINT telephone_tenant_fk FOREIGN KEY ( tenant_tenant_num )
+        REFERENCES tenant ( tenant_num );
+
+ALTER TABLE telephone
+    ADD CONSTRAINT telephone_worker_fk FOREIGN KEY ( worker_worker_number )
+        REFERENCES worker ( worker_number );
+
+ALTER TABLE visit
+    ADD CONSTRAINT visit_contract_fk FOREIGN KEY ( contract_hire_number )
+        REFERENCES contract ( hire_number );
+
+ALTER TABLE visit
+    ADD CONSTRAINT visit_tenant_fk FOREIGN KEY ( tenant_tenant_num )
+        REFERENCES tenant ( tenant_num );
+
+ALTER TABLE worker
+    ADD CONSTRAINT worker_shop_fk FOREIGN KEY ( shop_shop_number )
+        REFERENCES shop ( shop_number );
